@@ -10,29 +10,12 @@
         <div class="card" style="width: 500px; margin: auto;padding: 25px;margin-top: 100px;">
             <h2>Cadastro de Usuário</h2>
             <form method="POST" action="cadastro.php" >
-                <label for="nome">Nome</label>
-                <input type="text" class="form-control" name="nome">
-
                 <label for="login">Login</label>
                 <input type="text" class="form-control" name="login">
 
                 <label for="senha">Senha</label>
                 <input type="password" class="form-control" name="senha">
 
-                <label for="email">E-mail</label>
-                <input type="email" class="form-control" name="email">
-
-                <label for=fone>Telefone</label>
-                <input type="text" class="form-control phone-ddd-mask" placeholder="Ex.: (00) 0000-0000" name="fone">
-
-                <label for=nasc>Data de Nascimento</label>
-                <input type=date class="form-control" name=nascimento>
-
-                <label for=func>Função</label>
-                <select name=func class="form-control">
-                	<option>Professor</option>
-                	<option>Aluno</option>
-                </select>
                 <br>
                 <br>
                 <?php if(isset($_GET['error'])){
@@ -51,13 +34,8 @@
 	if(count($_POST)!=0){
 
 		if($_POST['login'] != '' AND $_POST['senha'] != ''){
-			$nome = $_POST['nome'];
 			$login = $_POST['login'];
 			$senha = $_POST['senha'];
-			$email = $_POST['email'];
-			$fone = $_POST['fone'];
-			$nasc = $_POST['nascimento'];
-			$funcao = $_POST['func'];
 
             try{
                 $conn = new PDO("sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0","sa","root");
@@ -66,14 +44,9 @@
                 echo 'Erro ao conectar om MySQL: ' . $e->getMessage();
             }
 
-			$query = $conn->prepare("INSERT INTO tb_usuarios (nome,login,senha,email,fone,nasc,funcao) VALUES (:nome,:login,:senha,:email,:fone,:nasc,:func)");
-			$query->bindParam(":nome",$nome);
+			$query = $conn->prepare("INSERT INTO tb_usuarios (login,senha) VALUES (:login,:senha);");
             $query->bindParam(":login",$login);
             $query->bindParam(":senha",$senha);
-            $query->bindParam(":email",$email);
-            $query->bindParam(":fone",$fone);
-            $query->bindParam(":nasc",$nasc);
-            $query->bindParam(":func",$funcao);
 			$query->execute();
 
 			var_dump($_POST);

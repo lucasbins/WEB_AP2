@@ -39,49 +39,12 @@ function dados_user(){
                 echo 'Erro ao conectar om MySQL: ' . $e->getMessage();
         }
 
-    $stmt = $conn->prepare("SELECT * FROM tb_usuarios WHERE login = '$login'");
+    $stmt = $conn->prepare("SELECT * FROM tb_usuarios WHERE login = '$login';");
     $stmt->execute();
     
 	while($row = $result = $stmt->fetch()){
-		echo 'Nome: '.$row['nome']. '<br>';
-		echo 'E-mail: '.$row['email']. '<br>';
-		echo 'Telefone: '.$row['fone']. '<br>';
 		echo 'Login: ' .$row['login']. '<br>';
-		echo 'Função: '.$row['funcao']. '<br>';
-		echo 'Nascimento: '.inverteData($row['nasc']). '<br>';
-		echo 'Idade: ' .descobrirIdade($row['nasc']). '<br>';
 	}
-}
-
-function descobrirIdade($dataNascimento){
-    $data       = explode("-",$dataNascimento);
-    
-    $anoNasc    = $data[0];
-    $mesNasc    = $data[1];
-    $diaNasc    = $data[2];
- 
-    $anoAtual   = date("Y");
-    $mesAtual   = date("m");
-    $diaAtual   = date("d");
- 
-    $idade      = $anoAtual - $anoNasc;
- 
-    if ($mesAtual < $mesNasc){
-        $idade -= 1;
-        return $idade;
-    } elseif ( ($mesAtual == $mesNasc) && ($diaAtual <= $diaNasc) ){
-        $idade -= 1;
-        return $idade;
-    }else
-        return $idade;
-}
-
-function inverteData($data){
-    if(count(explode("/",$data)) > 1){
-        return implode("-",array_reverse(explode("/",$data)));
-    }elseif(count(explode("-",$data)) > 1){
-        return implode("/",array_reverse(explode("-",$data)));
-    }
 }
 
 ?>	
